@@ -25,7 +25,8 @@ libraryDependencies += Seq(
 - open interval
 
 ```rust
-val range = Interval.over(Limit(BigDecimal(-5.5)), lowerIncluded = false, Limit(BigDecimal(6.6)), upperIncluded = true)
+val range = 
+  Interval.over(Limit(BigDecimal(-5.5)), lowerIncluded = false, Limit(BigDecimal(6.6)), upperIncluded = true)
 assert(range.includes(Limit(BigDecimal(5.0))))
 assert(!range.includes(Limit(BigDecimal(-5.5))))
 assert(range.includes(Limit(BigDecimal(-5.4999))))
