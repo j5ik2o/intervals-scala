@@ -24,7 +24,7 @@ libraryDependencies += Seq(
 
 - open interval
 
-```rust
+```scala
 val range = 
   Interval.over(Limit(BigDecimal(-5.5)), lowerIncluded = false, Limit(BigDecimal(6.6)), upperIncluded = true)
 assert(range.includes(Limit(BigDecimal(5.0))))
@@ -37,7 +37,7 @@ assert(!range.includes(Limit(BigDecimal(-5.501))))
 
 - closed interval
 
-```rust
+```scala
 val range = Interval.closed(Limit(BigDecimal(-5.5)), Limit(BigDecimal(6.6)))
 assert(range.includes(Limit(BigDecimal(5.0))))
 assert(range.includes(Limit(BigDecimal(-5.5))))
