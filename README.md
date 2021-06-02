@@ -17,3 +17,35 @@ libraryDependencies += Seq(
   "com.github.j5ik2o" %% "intervals-scala" % version,
 )
 ```
+
+## Usage
+
+- open interval
+
+```rust
+val range = Interval.over(Limit(BigDecimal(-5.5)), lowerIncluded = false, Limit(BigDecimal(6.6)), upperIncluded = true)
+assert(range.includes(Limit(BigDecimal(5.0))))
+assert(!range.includes(Limit(BigDecimal(-5.5))))
+assert(range.includes(Limit(BigDecimal(-5.4999))))
+assert(range.includes(Limit(BigDecimal(6.6))))
+assert(!range.includes(Limit(BigDecimal(6.601))))
+assert(!range.includes(Limit(BigDecimal(-5.501))))
+```
+
+- closed interval
+
+```rust
+val range = Interval.closed(Limit(BigDecimal(-5.5)), Limit(BigDecimal(6.6)))
+assert(range.includes(Limit(BigDecimal(5.0))))
+assert(range.includes(Limit(BigDecimal(-5.5))))
+assert(range.includes(Limit(BigDecimal(-5.4999))))
+assert(range.includes(Limit(BigDecimal(6.6))))
+assert(!range.includes(Limit(BigDecimal(6.601))))
+assert(!range.includes(Limit(BigDecimal(-5.501))))
+```
+
+
+
+## License
+
+MIT license ([LICENSE-MIT](LICENSE-MIT) or https://opensource.org/licenses/MIT)
