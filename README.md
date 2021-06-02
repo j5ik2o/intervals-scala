@@ -5,3 +5,13 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.j5ik2o/intervals-scala_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.j5ik2o/intervals-scala_2.13)
 [![Scaladoc](http://javadoc-badge.appspot.com/com.github.j5ik2o/intervals-scala_2.13.svg?label=scaladoc)](http://javadoc-badge.appspot.com/com.github.j5ik2o/intervals-scala_2.13/com/github/j5ik2o/akka/persistence/dynamodb/index.html?javadocio=true)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+## Installation
+
+Add the following to your sbt build (2.12.x, 2.13.x, 3.0.x):
+
+val version = "..."
+
+libraryDependencies += Seq(
+  "com.github.j5ik2o" %% "intervals-scala" % version,
+)
