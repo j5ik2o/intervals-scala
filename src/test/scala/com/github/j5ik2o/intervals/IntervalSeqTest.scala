@@ -1,21 +1,3 @@
-/*
- * Copyright 2011 Sisioh Project and the Others.
- * lastModified : 2011/04/22
- *
- * This file is part of Tricreo.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package com.github.j5ik2o.intervals
 
 import org.scalatest.funsuite.AnyFunSuite
@@ -48,12 +30,9 @@ class IntervalSeqTest extends AnyFunSuite {
 
   private val empty = Interval.closed(Limit(0), Limit(0))
 
-  private val all = Interval.open(Limitless[Int], Limitless[Int])
+  private val all = Interval.open(Limitless[Int](), Limitless[Int]())
 
-  /** [[IntervalSeq#iterator]]のテスト。
-    *
-    * @throws Exception 例外が発生した場合
-    */
+  // [[IntervalSeq#iterator]]のテスト。
   test("test01_Iterate") {
     var intervalSequence = new IntervalSeq[Int]
     assert(intervalSequence.isEmpty)
@@ -62,26 +41,23 @@ class IntervalSeqTest extends AnyFunSuite {
     intervalSequence :+= o10_12c
     val it = intervalSequence.iterator
     assert(it.hasNext)
-    assert(it.next == empty)
+    assert(it.next() == empty)
     assert(it.hasNext)
-    assert(it.next == c5_10c)
+    assert(it.next() == c5_10c)
     assert(it.hasNext)
-    assert(it.next == o10_12c)
+    assert(it.next() == o10_12c)
     assert(!it.hasNext)
     try {
-      it.next
+      it.next()
       fail("Should throw NoSuchElementException")
     } catch {
-      case e: NoSuchElementException =>
+      case _: NoSuchElementException =>
       // success
       case _: Throwable => fail()
     }
   }
 
-  /** [[IntervalSeq#add(Interval)]]が順不同で行われた場合の[[IntervalSequence]]のテスト。
-    *
-    * @throws Exception 例外が発生した場合
-    */
+  // [[IntervalSeq#add(Interval)]]が順不同で行われた場合の[[IntervalSequence]]のテスト。
   test("test02_InsertedOutOfOrder") {
     var intervalSequence = new IntervalSeq[Int]
     intervalSequence :+= o10_12c
@@ -89,46 +65,40 @@ class IntervalSeqTest extends AnyFunSuite {
     //Iterator behavior should be the same regardless of order of insertion.
     val it = intervalSequence.iterator
     assert(it.hasNext)
-    assert(it.next == c5_10c)
+    assert(it.next() == c5_10c)
     assert(it.hasNext)
-    assert(it.next == o10_12c)
+    assert(it.next() == o10_12c)
     assert(!it.hasNext)
     try {
-      it.next
+      it.next()
       fail("Should throw NoSuchElementException")
     } catch {
-      case e: NoSuchElementException => // success
+      case _: NoSuchElementException => // success
       case _: Throwable              => fail()
     }
   }
 
-  /** 重なる区間を含んだ[[IntervalSeq]]のテスト。
-    *
-    * @throws Exception 例外が発生した場合
-    */
+  // 重なる区間を含んだ[[IntervalSeq]]のテスト。
   test("test03_Overlapping") {
     var intervalSequence = new IntervalSeq[Int]()
     intervalSequence :+= o10_12c
     intervalSequence :+= o11_20c
     val it = intervalSequence.iterator
     assert(it.hasNext)
-    assert(it.next == o10_12c)
+    assert(it.next() == o10_12c)
     assert(it.hasNext)
-    assert(it.next == o11_20c)
+    assert(it.next() == o11_20c)
     assert(!it.hasNext)
     try {
-      it.next
+      it.next()
       fail("Should throw NoSuchElementException")
     } catch {
-      case e: NoSuchElementException => // success
+      case _: NoSuchElementException => // success
       case _: Throwable              => fail()
     }
   }
 
-  /** [[IntervalSeq#intersections]]のテスト。
-    *
-    * @throws Exception 例外が発生した場合
-    */
+  // [[IntervalSeq#intersections]]のテスト。
   test("test04_Intersections") {
     var intervalSequence = IntervalSeq[Int]()
     intervalSequence :+= o10_12c
@@ -137,23 +107,20 @@ class IntervalSeqTest extends AnyFunSuite {
 
     val it = intervalSequence.intersections.iterator
     assert(it.hasNext)
-    assert(it.next == o11_12c)
+    assert(it.next() == o11_12c)
     assert(it.hasNext)
-    assert(it.next == c20_20c)
+    assert(it.next() == c20_20c)
     assert(!it.hasNext)
     try {
-      it.next
+      it.next()
       fail("Should throw NoSuchElementException")
     } catch {
-      case e: NoSuchElementException =>
+      case _: NoSuchElementException =>
       case _: Throwable              => fail()
     }
   }
 
-  /** [[IntervalSeq#gaps]]のテスト。
-    *
-    * @throws Exception 例外が発生した場合
-    */
+  // [[IntervalSeq#gaps]]のテスト。
   test("test05_Gaps") {
     var intervalSeq = IntervalSeq[Int]()
     intervalSeq :+= c5_10c
@@ -163,40 +130,37 @@ class IntervalSeqTest extends AnyFunSuite {
 
     val it = intervalSeq.gaps.iterator
     assert(it.hasNext)
-    assert(it.next == o12_20o)
+    assert(it.next() == o12_20o)
     assert(it.hasNext)
-    assert(it.next == o25_30c)
+    assert(it.next() == o25_30c)
     assert(!it.hasNext)
     try {
       it.next()
       fail("Should throw NoSuchElementException")
     } catch {
-      case e: NoSuchElementException =>
+      case _: NoSuchElementException =>
       // success
       case _: Throwable => fail()
     }
   }
 
-  /** [[IntervalSeq#extent]]のテスト。
-    *
-    * @throws Exception 例外が発生した場合
-    */
+  // [[IntervalSeq#extent]]のテスト。
   test("test06_Extent") {
     val intervals = ArrayBuffer.empty[Interval[Int]]
     intervals += c5_10c
     intervals += o10_12c
     intervals += c20_25c
 
-    val intervalSequence1 = IntervalSeq(intervals.result)
-    assert(intervalSequence1.extent == Interval.closed(Limit(5), Limit(25)))
+    val intervalSequence1 = IntervalSeq(intervals)
+    assert(intervalSequence1.extent.contains(Interval.closed(Limit(5), Limit(25))))
 
     intervals += _o18
-    val intervalSequence2 = IntervalSeq(intervals.result)
-    assert(intervalSequence2.extent == Interval.closed(Limitless[Int], Limit(25)))
+    val intervalSequence2 = IntervalSeq(intervals)
+    assert(intervalSequence2.extent.contains(Interval.closed(Limitless[Int](), Limit(25))))
 
     intervals += all
-    val intervalSequence3 = IntervalSeq(intervals.result)
-    assert(intervalSequence3.extent == all)
+    val intervalSequence3 = IntervalSeq(intervals)
+    assert(intervalSequence3.extent.contains(all))
 
     //		for (seq <- variousSequences()) {
     //			seq.add(c5_10c);

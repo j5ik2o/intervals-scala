@@ -1,21 +1,3 @@
-/*
- * Copyright 2011 Sisioh Project and the Others.
- * lastModified : 2011/04/22
- *
- * This file is part of Tricreo.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package com.github.j5ik2o.intervals
 
 import org.scalatest.funsuite.AnyFunSuite
@@ -28,6 +10,7 @@ import scala.util.Random
 class IntervalLimitTest extends AnyFunSuite {
 
   test("test01_Equals") {
+
     assert(IntervalLimit.lower(closed = false, Limit(10)) == IntervalLimit.lower(closed = false, Limit(10)))
     assert(IntervalLimit.lower(closed = true, Limit(10)) != IntervalLimit.lower(closed = false, Limit(10)))
     assert(IntervalLimit.lower(closed = false, Limit(10)) != IntervalLimit.lower(closed = true, Limit(10)))
@@ -58,8 +41,8 @@ class IntervalLimitTest extends AnyFunSuite {
   }
 
   test("test02_compareTo") {
-    val lowerInf    = IntervalLimit.lower(closed = false, Limitless[Int])
-    val upperInf    = IntervalLimit.upper(closed = false, Limitless[Int])
+    val lowerInf    = IntervalLimit.lower(closed = false, Limitless[Int]())
+    val upperInf    = IntervalLimit.upper(closed = false, Limitless[Int]())
     val lowerOpen2  = IntervalLimit.lower(closed = false, Limit(2))
     val lowerClose2 = IntervalLimit.lower(closed = true, Limit(2))
     val lowerOpen3  = IntervalLimit.lower(closed = false, Limit(3))
@@ -171,10 +154,10 @@ class IntervalLimitTest extends AnyFunSuite {
   test("test03_sort") {
     val list = ListBuffer[IntervalLimit[Int]]()
 
-    list += IntervalLimit.upper(closed = false, Limitless[Int])
-    list += IntervalLimit.upper(closed = true, Limitless[Int])
-    list += IntervalLimit.lower(closed = false, Limitless[Int])
-    list += IntervalLimit.lower(closed = true, Limitless[Int])
+    list += IntervalLimit.upper(closed = false, Limitless[Int]())
+    list += IntervalLimit.upper(closed = true, Limitless[Int]())
+    list += IntervalLimit.lower(closed = false, Limitless[Int]())
+    list += IntervalLimit.lower(closed = true, Limitless[Int]())
     list += IntervalLimit.lower(closed = true, Limit(1))
     list += IntervalLimit.lower(closed = false, Limit(1))
     list += IntervalLimit.lower(closed = true, Limit(5))
@@ -192,8 +175,8 @@ class IntervalLimitTest extends AnyFunSuite {
     //      println("%d:%s".format(i, sortedList(i)))
     //    }
 
-    assert(sortedList(0) == IntervalLimit.lower(closed = false, Limitless[Int]))
-    assert(sortedList(1) == IntervalLimit.lower(closed = false, Limitless[Int]))
+    assert(sortedList(0) == IntervalLimit.lower(closed = false, Limitless[Int]()))
+    assert(sortedList(1) == IntervalLimit.lower(closed = false, Limitless[Int]()))
 
     assert(sortedList(2) == IntervalLimit.lower(closed = true, Limit(1)))
     assert(sortedList(3) == IntervalLimit.lower(closed = false, Limit(1)))
@@ -204,8 +187,8 @@ class IntervalLimitTest extends AnyFunSuite {
     assert(sortedList(8) == IntervalLimit.upper(closed = false, Limit(5)))
     assert(sortedList(9) == IntervalLimit.upper(closed = true, Limit(5)))
 
-    assert(sortedList(10) == IntervalLimit.upper(closed = false, Limitless[Int]))
-    assert(sortedList(11) == IntervalLimit.upper(closed = false, Limitless[Int]))
+    assert(sortedList(10) == IntervalLimit.upper(closed = false, Limitless[Int]()))
+    assert(sortedList(11) == IntervalLimit.upper(closed = false, Limitless[Int]()))
 
   }
 }

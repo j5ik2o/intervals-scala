@@ -1,127 +1,4 @@
-/*
- * Copyright 2011 Sisioh Project and the Others.
- * lastModified : 2011/04/22
- *
- * This file is part of Tricreo.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package com.github.j5ik2o.intervals
-
-/** 限界値を表すトレイト。
-  *
-  * @author j5ik2o
-  * @tparam T 限界値の型
-  */
-trait LimitValue[T] extends Ordered[LimitValue[T]] {
-
-  /** 限界値を返す。
-    *
-    * @return 限界値
-    * @throws NoSuchElementException 無限の場合
-    */
-  def toValue: T = toValueOrElse(throw new NoSuchElementException)
-
-  /** 限界値を返す。
-    *
-    * @param default 無限の場合の式
-    * @return 限界値。無限の場合は`default`を返す。
-    */
-  def toValueOrElse(default: => T): T = this match {
-    case Limit(value)    => value
-    case _: Limitless[T] => default
-  }
-
-  override def equals(obj: Any): Boolean = obj match {
-    case that: LimitValue[T] => (this compare that) == 0
-    case that =>
-      this match {
-        case Limit(value)     => value == that
-        case me: Limitless[T] => false
-      }
-  }
-
-}
-
-/** `LimitValue`コンパニオンオブジェクト。
-  *
-  * @author j5ik2o
-  */
-object LimitValue {
-
-  /** `LimitValue`を[[org.sisioh.baseunits.scala.intervals.Limit]]の限界値に変換する。
-    *
-    * @param limitValue [[org.sisioh.baseunits.scala.intervals.LimitValue]]
-    * @return [[org.sisioh.baseunits.scala.intervals.Limit]]
-    * @throws IllegalArgumentException limitValueがLimitless[T]の場合
-    */
-  implicit def toValue[T](
-      limitValue: LimitValue[T]
-  )(implicit ev: T => Ordered[T]): T =
-    limitValue match {
-      case Limit(value) => value
-      case _: Limitless[T] =>
-        throw new IllegalArgumentException(
-          "implicit conversion from Limitless[T] can't do."
-        )
-    }
-
-  /** 値を[[org.sisioh.baseunits.scala.intervals.LimitValue]]に変換する。
-    *
-    * @param value 値
-    * @return [[org.sisioh.baseunits.scala.intervals.Limit]]
-    */
-  def toLimitValue[T](
-      value: Option[T]
-  )(implicit ev: T => Ordered[T]): LimitValue[T] =
-    value match {
-      case None    => Limitless[T]()
-      case Some(v) => Limit(v)
-    }
-
-  implicit def toLimit[T](value: T)(implicit ev: T => Ordered[T]): Limit[T] =
-    Limit(value)
-
-}
-
-/** 有限の限界値を表すクラス。
-  *
-  * @author j5ik2o
-  * @tparam T 限界値の型
-  * @param value 限界値
-  */
-case class Limit[T](value: T)(implicit ev: T => Ordered[T]) extends LimitValue[T] {
-
-  def compare(that: LimitValue[T]): Int = that match {
-    case that: Limit[T] => value compare that.value
-    case _              => 1
-  }
-
-}
-
-/** 無限の限界値を表すクラス。
-  *
-  * @author j5ik2o
-  * @tparam T 限界値の型
-  */
-case class Limitless[T]()(implicit ev: T => Ordered[T]) extends LimitValue[T] {
-
-  def compare(that: LimitValue[T]): Int = that match {
-    case that: Limitless[T] => 0
-    case _                  => -1
-  }
-
-}
 
 /** 区間における「限界」を表すクラス。
   *
@@ -138,18 +15,16 @@ case class Limitless[T]()(implicit ev: T => Ordered[T]) extends LimitValue[T] {
   * 下側限界とは、限界値以下（または未満）の値を超過とみなす限界を表し、
   * 上側限界とは、限界値以上（または超える）の値を超過とみなす限界を表す。
   *
-  * @author j5ik2o
   * @tparam T 限界の型
   * @param closed 限界が閉じている場合 `true`
   * @param lower 下側限界を表す場合は `true`、上側限界を表す場合は `false`
-  * @param value 限界値 [[org.sisioh.baseunits.scala.intervals.Limitless]]の場合は、限界がないことを表す。
+  * @param value 限界値 [[Limitless]]の場合は、限界がないことを表す。
   */
 class IntervalLimit[T](
     private[intervals] val closed: Boolean,
     private[intervals] val lower: Boolean,
     private[intervals] val value: LimitValue[T]
-)(implicit ev: T => Ordered[T])
-    extends Ordered[IntervalLimit[T]]
+) extends Ordered[IntervalLimit[T]]
     with Serializable {
 
   private def lowerToInt(t: Int, f: Int) = if (lower) t else f
@@ -238,8 +113,6 @@ class IntervalLimit[T](
 }
 
 /** `IntervalLimit`コンパニオンオブジェクト。
-  *
-  * @author j5ik2o
   */
 object IntervalLimit {
 
@@ -253,9 +126,7 @@ object IntervalLimit {
     * @param lower 下側限界を生成する場合は `true`、上側限界を生成する場合は `false`を指定する
     * @param value 限界値. `Limitless[T]`の場合は、限界がないことを表す
     */
-  def apply[T](closed: Boolean, lower: Boolean, value: LimitValue[T])(implicit
-      ev: T => Ordered[T]
-  ): IntervalLimit[T] =
+  def apply[T](closed: Boolean, lower: Boolean, value: LimitValue[T]): IntervalLimit[T] =
     new IntervalLimit[T](
       if (value.isInstanceOf[Limitless[_]]) false else closed,
       lower,
@@ -265,12 +136,12 @@ object IntervalLimit {
   /** 抽出子メソッド。
     *
     * @tparam T 限界値の型
-    * @param intervalLimit [[org.sisioh.baseunits.scala.intervals.IntervalLimit]]
+    * @param intervalLimit [[IntervalLimit]]
     * @return Option[(Boolean, Boolean, T)]
     */
   def unapply[T](
       intervalLimit: IntervalLimit[T]
-  )(implicit ev: T => Ordered[T]): Option[(Boolean, Boolean, LimitValue[T])] =
+  ): Option[(Boolean, Boolean, LimitValue[T])] =
     Some(intervalLimit.closed, intervalLimit.lower, intervalLimit.value)
 
   /** 下側限界インスタンスを生成する。
@@ -280,10 +151,8 @@ object IntervalLimit {
     * @param value 限界値. `Limitless[T]`の場合は、限界がないことを表す
     * @return 下側限界インスタンス
     */
-  def lower[T](closed: Boolean, value: LimitValue[T])(implicit
-      ev: T => Ordered[T]
-  ): IntervalLimit[T] =
-    apply(closed, true, value)
+  def lower[T](closed: Boolean, value: LimitValue[T]): IntervalLimit[T] =
+    apply(closed, lower = true, value)
 
   /** 上側限界インスタンスを生成する。
     *
@@ -292,9 +161,7 @@ object IntervalLimit {
     * @param value 限界値. `Limitless[T]`の場合は、限界がないことを表す
     * @return 上側限界インスタンス
     */
-  def upper[T](closed: Boolean, value: LimitValue[T])(implicit
-      ev: T => Ordered[T]
-  ): IntervalLimit[T] =
-    apply(closed, false, value)
+  def upper[T](closed: Boolean, value: LimitValue[T]): IntervalLimit[T] =
+    apply(closed, lower = false, value)
 
 }
