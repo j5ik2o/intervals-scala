@@ -10,8 +10,10 @@
 
 Add the following to your sbt build (2.12.x, 2.13.x, 3.0.x):
 
+```scala
 val version = "..."
 
 libraryDependencies += Seq(
   "com.github.j5ik2o" %% "intervals-scala" % version,
 )
+```
