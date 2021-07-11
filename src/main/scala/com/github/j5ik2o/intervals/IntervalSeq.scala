@@ -8,7 +8,7 @@ import scala.collection._
   * @param values [[Interval]]の列
   * @param ordering [[Ordering]]
   */
-class IntervalSeq[T](val values: Seq[Interval[T]], val ordering: Ordering[Interval[T]]) {
+class IntervalSeq[T](val values: Vector[Interval[T]], val ordering: Ordering[Interval[T]]) {
 
   def append(value: Interval[T]): IntervalSeq[T] = new IntervalSeq(values :+ value)
 
@@ -23,7 +23,7 @@ class IntervalSeq[T](val values: Seq[Interval[T]], val ordering: Ordering[Interv
     * `intervals`は空を利用し、`ordering`は`UpperLowerOrdering[T](true, false)`を利用する。
     */
   def this() =
-    this(Seq.empty[Interval[T]], UpperLowerOrdering[T](inverseLower = true, inverseUpper = false))
+    this(Vector.empty, UpperLowerOrdering[T](inverseLower = true, inverseUpper = false))
 
   /** インスタンスを生成する。
     *
@@ -31,7 +31,7 @@ class IntervalSeq[T](val values: Seq[Interval[T]], val ordering: Ordering[Interv
     *
     * @param values [[Interval]]の列
     */
-  def this(values: Seq[Interval[T]]) =
+  def this(values: Vector[Interval[T]]) =
     this(values, UpperLowerOrdering[T](inverseLower = true, inverseUpper = false))
 
   /** 全ての要素区間を内包する、最小の区間を返す。
@@ -61,9 +61,9 @@ class IntervalSeq[T](val values: Seq[Interval[T]], val ordering: Ordering[Interv
     */
   lazy val gaps: IntervalSeq[T] = {
     if (values.size < 2) {
-      IntervalSeq(Seq.empty[Interval[T]])
+      new IntervalSeq()
     } else {
-      val seq = (1 until this.values.size).flatMap { i =>
+      val values = (1 until this.values.size).flatMap { i =>
         val left  = this.values(i - 1)
         val right = this.values(i)
         val gap   = left.gap(right)
@@ -73,7 +73,7 @@ class IntervalSeq[T](val values: Seq[Interval[T]], val ordering: Ordering[Interv
           Some(gap)
         }
       }
-      IntervalSeq(seq)
+      IntervalSeq(values.toVector)
     }
   }
 
@@ -88,16 +88,16 @@ class IntervalSeq[T](val values: Seq[Interval[T]], val ordering: Ordering[Interv
     */
   lazy val intersections: IntervalSeq[T] = {
     if (values.size < 2) {
-      IntervalSeq[T]()
+      new IntervalSeq()
     } else {
-      val seq = (1 until this.values.size).flatMap { i =>
+      val values = (1 until this.values.size).flatMap { i =>
         val left  = this.values(i - 1)
         val right = this.values(i)
         val gap   = left.intersect(right)
         if (gap.isEmpty) None
         else Some(gap)
       }
-      IntervalSeq(seq)
+      IntervalSeq(values.toVector)
     }
   }
 
@@ -121,7 +121,7 @@ object IntervalSeq {
     * @param intervals [[Interval]]の列
     * @return [[IntervalSeq]]
     */
-  def apply[T](intervals: Seq[Interval[T]]): IntervalSeq[T] =
+  def apply[T](intervals: Vector[Interval[T]]): IntervalSeq[T] =
     new IntervalSeq(intervals)
 
   /** インスタンスを生成する。

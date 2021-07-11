@@ -151,15 +151,15 @@ class IntervalSeqTest extends AnyFunSuite {
     intervals += o10_12c
     intervals += c20_25c
 
-    val intervalSequence1 = IntervalSeq(intervals)
+    val intervalSequence1 = IntervalSeq(intervals.toVector)
     assert(intervalSequence1.extent.contains(Interval.closed(Limit(5), Limit(25))))
 
     intervals += _o18
-    val intervalSequence2 = IntervalSeq(intervals)
+    val intervalSequence2 = IntervalSeq(intervals.toVector)
     assert(intervalSequence2.extent.contains(Interval.closed(Limitless[Int](), Limit(25))))
 
     intervals += all
-    val intervalSequence3 = IntervalSeq(intervals)
+    val intervalSequence3 = IntervalSeq(intervals.toVector)
     assert(intervalSequence3.extent.contains(all))
 
     //		for (seq <- variousSequences()) {
