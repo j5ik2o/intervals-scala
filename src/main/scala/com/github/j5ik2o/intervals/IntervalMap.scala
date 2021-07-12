@@ -5,8 +5,10 @@ import scala.collection.immutable.Map
 
 /** 区間に対して値をマッピングする抽象クラス。
   *
-  * @tparam A キーとなる区間の型
-  * @tparam B 値の型
+  * @tparam A
+  *   キーとなる区間の型
+  * @tparam B
+  *   値の型
   */
 class IntervalMap[A, B](val values: Map[Interval[A], B]) {
 
@@ -38,13 +40,14 @@ class IntervalMap[A, B](val values: Map[Interval[A], B]) {
   private def findKeyIntervalContaining(key: LimitValue[A]): Option[Interval[A]] =
     values.keys.find(_.includes(key))
 
-  /** この写像が保持するキーとしての区間のうち、指定した区間 `otherInterval`と共通部分を持つ
-    * 区間の列を取得する。
+  /** この写像が保持するキーとしての区間のうち、指定した区間 `otherInterval`と共通部分を持つ 区間の列を取得する。
     *
     * 戻り値の列は、区間の自然順にソートされている。
     *
-    * @param otherInterval 対象区間
-    * @return 指定した区間と共通部分を持つ区間の列
+    * @param otherInterval
+    *   対象区間
+    * @return
+    *   指定した区間と共通部分を持つ区間の列
     */
   private def intersectingKeys(otherInterval: Interval[A]): Seq[Interval[A]] =
     values.keys.flatMap {
@@ -94,27 +97,36 @@ object IntervalMap {
 
   /** インスタンスを生成する。
     *
-    * @tparam A キーの型
-    * @tparam B 値の型
-    * @return [[IntervalMap]]
+    * @tparam A
+    *   キーの型
+    * @tparam B
+    *   値の型
+    * @return
+    *   [[IntervalMap]]
     */
   def apply[A, B]: IntervalMap[A, B] =
     new IntervalMap()
 
   /** ファクトリメソッド。
     *
-    * @tparam A キーの型
-    * @tparam B 値の型
-    * @return [[IntervalMap]]
+    * @tparam A
+    *   キーの型
+    * @tparam B
+    *   値の型
+    * @return
+    *   [[IntervalMap]]
     */
   def apply[A, B](values: Map[Interval[A], B]): IntervalMap[A, B] =
     new IntervalMap(values)
 
   /** 抽出子メソッド。
     *
-    * @tparam A キーの型
-    * @tparam B 値の型
-    * @return [[LinearIntervalMap]]
+    * @tparam A
+    *   キーの型
+    * @tparam B
+    *   値の型
+    * @return
+    *   [[LinearIntervalMap]]
     */
   def unapply[A, B](self: IntervalMap[A, B]): Option[Map[Interval[A], B]] =
     Some(self.values)
