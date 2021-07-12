@@ -4,8 +4,10 @@ package com.github.j5ik2o.intervals
   *
   * 下側限界による比較を優先し、同じであったら上側限界による比較を採用する。
   *
-  * @param inverseLower 下限が逆順の場合は`true`
-  * @param inverseUpper 上限が逆順の場合は`false`
+  * @param inverseLower
+  *   下限が逆順の場合は`true`
+  * @param inverseUpper
+  *   上限が逆順の場合は`false`
   */
 class LowerUpperOrdering[T](private val inverseLower: Boolean, private val inverseUpper: Boolean)
     extends Ordering[Interval[T]] {
@@ -34,17 +36,22 @@ object LowerUpperOrdering {
 
   /** インスタンスを生成する。
     *
-    * @param inverseLower 下限が逆順の場合は`true`
-    * @param inverseUpper 上限が逆順の場合は`false`
-    * @return [[LowerUpperOrdering]]
+    * @param inverseLower
+    *   下限が逆順の場合は`true`
+    * @param inverseUpper
+    *   上限が逆順の場合は`false`
+    * @return
+    *   [[LowerUpperOrdering]]
     */
   def apply[T](inverseLower: Boolean, inverseUpper: Boolean): LowerUpperOrdering[T] =
     new LowerUpperOrdering[T](inverseLower, inverseUpper)
 
   /** 抽出子メソッド。
     *
-    * @param lowerUpperOrdering [[LowerUpperOrdering]]
-    * @return `Option[(Boolean, Boolean)]`
+    * @param lowerUpperOrdering
+    *   [[LowerUpperOrdering]]
+    * @return
+    *   `Option[(Boolean, Boolean)]`
     */
   def unapply[T](lowerUpperOrdering: LowerUpperOrdering[T]): Option[(Boolean, Boolean)] =
     Some(lowerUpperOrdering.inverseLower, lowerUpperOrdering.inverseUpper)

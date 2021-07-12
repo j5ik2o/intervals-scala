@@ -43,9 +43,6 @@ lazy val baseSettings = Seq(
     Resolver.sonatypeRepo("releases"),
     "Seasar Repository" at "https://maven.seasar.org/maven2/"
   ),
-  ThisBuild / scalafixScalaBinaryVersion := CrossVersion.binaryScalaVersion(scalaVersion.value),
-  semanticdbEnabled := true,
-  semanticdbVersion := scalafixSemanticdb.revision,
   Test / publishArtifact := false,
   Test / fork := true,
   Test / parallelExecution := false,
@@ -56,7 +53,14 @@ lazy val baseSettings = Seq(
     } else {
       old
     }
-  }
+  },
+  semanticdbEnabled := true,
+  semanticdbVersion := scalafixSemanticdb.revision,
+  // Remove me when scalafix is stable and feature-complete on Scala 3
+  ThisBuild / scalafixScalaBinaryVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, _)) => CrossVersion.binaryScalaVersion(scalaVersion.value)
+    case _            => CrossVersion.binaryScalaVersion(Versions.scala212Version)
+  })
 )
 
 val root = (project in file("."))
