@@ -42,8 +42,8 @@ class IntervalSeq[T](val values: Vector[Interval[T]], val ordering: Ordering[Int
     *
     * @return
     *   全ての要素区間を内包する、最小の区間
-    * @throws
-    *   IllegalStateException 要素が1つもない場合
+    * @throws IllegalStateException
+    *   要素が1つもない場合
     */
   lazy val extent: Option[Interval[T]] = {
     values.toList match {

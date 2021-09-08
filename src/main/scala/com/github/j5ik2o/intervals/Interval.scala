@@ -55,8 +55,8 @@ class Interval[T](
     *   上側限界値. [[Limitless]] の場合は、限界がないことを表す
     * @param isUpperClosed
     *   上限値が閉区間である場合は `true`を指定する
-    * @throws
-    *   IllegalArgumentException 下限値が上限値より大きい場合
+    * @throws IllegalArgumentException
+    *   下限値が上限値より大きい場合
     */
   def this(lower: LimitValue[T], isLowerClosed: Boolean, upper: LimitValue[T], isUpperClosed: Boolean) = {
     this(
@@ -652,8 +652,8 @@ object Interval {
     *   上側限界値. [[Limitless]] の場合は、限界がないことを表す
     * @return
     *   閉区間
-    * @throws
-    *   IllegalArgumentException 下限値が上限値より大きい場合
+    * @throws IllegalArgumentException
+    *   下限値が上限値より大きい場合
     */
   def closed[T](lower: LimitValue[T], upper: LimitValue[T]): Interval[T] =
     new Interval(lower, true, upper, true)
@@ -687,8 +687,8 @@ object Interval {
     *   上側限界値. [[Limitless]] の場合は、限界がないことを表す
     * @return
     *   開区間
-    * @throws
-    *   IllegalArgumentException 下限値が上限値より大きい場合
+    * @throws IllegalArgumentException
+    *   下限値が上限値より大きい場合
     */
   def open[T](lower: LimitValue[T], upper: LimitValue[T]): Interval[T] =
     new Interval(lower, false, upper, false)
@@ -707,8 +707,8 @@ object Interval {
     *   上限値を区間に含む（閉じた上側限界）場合は`true`を指定する
     * @return
     *   区間
-    * @throws
-    *   IllegalArgumentException 下限値が上限値より大きい場合
+    * @throws IllegalArgumentException
+    *   下限値が上限値より大きい場合
     */
   def over[T](
       lower: LimitValue[T],

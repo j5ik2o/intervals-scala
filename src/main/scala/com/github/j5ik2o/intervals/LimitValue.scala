@@ -11,8 +11,8 @@ trait LimitValue[T] extends Ordered[LimitValue[T]] {
     *
     * @return
     *   限界値
-    * @throws
-    *   NoSuchElementException 無限の場合
+    * @throws NoSuchElementException
+    *   無限の場合
     */
   def toValue: T = toValueOrElse(throw new NoSuchElementException)
 
@@ -49,8 +49,8 @@ object LimitValue {
     *   [[LimitValue]]
     * @return
     *   [[Limit]]
-    * @throws
-    *   IllegalArgumentException limitValueがLimitless[T]の場合
+    * @throws IllegalArgumentException
+    *   limitValueがLimitless[T]の場合
     */
   implicit def toValue[T](
       limitValue: LimitValue[T]
