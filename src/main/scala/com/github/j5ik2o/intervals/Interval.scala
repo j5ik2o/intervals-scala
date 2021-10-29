@@ -345,7 +345,7 @@ class Interval[T](
   def isSingleElement: Boolean =
     if (!hasUpperLimit) false
     else if (!hasLowerLimit) false
-    //An interval containing a single element, {a}.
+    // An interval containing a single element, {a}.
     else upperLimit == lowerLimit && !isEmpty
 
   /** 下側限界値を取得する。

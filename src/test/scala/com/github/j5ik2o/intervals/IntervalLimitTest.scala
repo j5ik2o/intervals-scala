@@ -37,7 +37,7 @@ class IntervalLimitTest extends AnyFunSuite {
 
     assert(IntervalLimit.lower(closed = false, Limit(10)) == IntervalLimit.lower(closed = false, Limit(10)))
     assert(IntervalLimit(closed = false, lower = true, Limit(10)) == IntervalLimit.lower(closed = false, Limit(10)))
-    //assert(new IntervalLimit(false, true, Limit(10)){ } != IntervalLimit.isLower(false, Limit(10)))
+    // assert(new IntervalLimit(false, true, Limit(10)){ } != IntervalLimit.isLower(false, Limit(10)))
   }
 
   test("test02_compareTo") {

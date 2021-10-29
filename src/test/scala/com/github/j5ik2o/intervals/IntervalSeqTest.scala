@@ -62,7 +62,7 @@ class IntervalSeqTest extends AnyFunSuite {
     var intervalSequence = new IntervalSeq[Int]
     intervalSequence :+= o10_12c
     intervalSequence :+= c5_10c
-    //Iterator behavior should be the same regardless of order of insertion.
+    // Iterator behavior should be the same regardless of order of insertion.
     val it = intervalSequence.iterator
     assert(it.hasNext)
     assert(it.next() == c5_10c)
