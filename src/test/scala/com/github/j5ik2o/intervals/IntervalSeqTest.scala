@@ -80,7 +80,7 @@ class IntervalSeqTest extends AnyFunSuite {
 
   // 重なる区間を含んだ[[IntervalSeq]]のテスト。
   test("test03_Overlapping") {
-    var intervalSequence = new IntervalSeq[Int]()
+    var intervalSequence = new IntervalSeq[Int]
     intervalSequence :+= o10_12c
     intervalSequence :+= o11_20c
     val it = intervalSequence.iterator

@@ -2,12 +2,12 @@ import Dependencies.Versions
 
 def crossScalacOptions(scalaVersion: String): Seq[String] =
   CrossVersion.partialVersion(scalaVersion) match {
-    case Some((3L, _)) =>
+    case Some(3L, _) =>
       Seq(
         "-source:3.0-migration",
         "-Xignore-scala2-macros"
       )
-    case Some((2L, scalaMajor)) if scalaMajor >= 12 =>
+    case Some(2L, scalaMajor) if scalaMajor >= 12 =>
       Seq(
         "-Ydelambdafy:method",
         "-target:jvm-1.8",
@@ -30,14 +30,14 @@ lazy val baseSettings = Seq(
   ),
   scalaVersion := Versions.scala213Version,
   crossScalaVersions := Seq(Versions.scala212Version, Versions.scala213Version, Versions.scala3Version),
-  scalacOptions ++= (Seq(
+  scalacOptions ++= Seq(
     "-unchecked",
     "-feature",
     "-deprecation",
     "-encoding",
     "UTF-8",
     "-language:_"
-  ) ++ crossScalacOptions(scalaVersion.value)),
+  ) ++ crossScalacOptions(scalaVersion.value),
   resolvers ++= Seq(
     Resolver.sonatypeRepo("snapshots"),
     Resolver.sonatypeRepo("releases"),
@@ -58,8 +58,8 @@ lazy val baseSettings = Seq(
   semanticdbVersion := scalafixSemanticdb.revision,
   // Remove me when scalafix is stable and feature-complete on Scala 3
   ThisBuild / scalafixScalaBinaryVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, _)) => CrossVersion.binaryScalaVersion(scalaVersion.value)
-    case _            => CrossVersion.binaryScalaVersion(Versions.scala212Version)
+    case Some(2, _) => CrossVersion.binaryScalaVersion(scalaVersion.value)
+    case _          => CrossVersion.binaryScalaVersion(Versions.scala212Version)
   })
 )
 

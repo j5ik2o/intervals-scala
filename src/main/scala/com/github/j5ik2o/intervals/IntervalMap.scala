@@ -26,7 +26,7 @@ class IntervalMap[A, B](val values: Map[Interval[A], B]) {
     val keyValues = collection.mutable.Map.empty[Interval[A], B]
     keyValues ++= source
     intervalSequence.foreach { e =>
-      keyValues += (e -> value)
+      keyValues += e -> value
     }
     keyValues.toMap
   }
@@ -105,7 +105,7 @@ object IntervalMap {
     *   [[IntervalMap]]
     */
   def apply[A, B]: IntervalMap[A, B] =
-    new IntervalMap()
+    new IntervalMap
 
   /** ファクトリメソッド。
     *

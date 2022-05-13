@@ -67,7 +67,7 @@ class IntervalSeq[T](val values: Vector[Interval[T]], val ordering: Ordering[Int
     */
   lazy val gaps: IntervalSeq[T] = {
     if (values.size < 2) {
-      new IntervalSeq()
+      new IntervalSeq
     } else {
       val values = (1 until this.values.size).flatMap { i =>
         val left  = this.values(i - 1)
@@ -94,7 +94,7 @@ class IntervalSeq[T](val values: Vector[Interval[T]], val ordering: Ordering[Int
     */
   lazy val intersections: IntervalSeq[T] = {
     if (values.size < 2) {
-      new IntervalSeq()
+      new IntervalSeq
     } else {
       val values = (1 until this.values.size).flatMap { i =>
         val left  = this.values(i - 1)
@@ -140,7 +140,7 @@ object IntervalSeq {
     * @return
     *   [[IntervalSeq]]
     */
-  def apply[T](): IntervalSeq[T] = new IntervalSeq[T]()
+  def apply[T](): IntervalSeq[T] = new IntervalSeq[T]
 
   /** 抽出子メソッド。
     *
