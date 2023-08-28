@@ -67,7 +67,7 @@ val root = (project in file("."))
   .settings(baseSettings)
   .settings(
     name := "intervals-scala",
-    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.11" % Test
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.16" % Test
   )
 
 // --- Custom commands
